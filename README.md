@@ -12,15 +12,15 @@ integers.
 
 Comments must be on lines by themselves and start with #
 
-   # Moon Landing Configuration File
+    # Moon Landing Configuration File
 
-   program.name=Apollo
-   sequence=11
-   commander=N. A. Armstrong
-   lm pilot=E. E. Aldrin
-   cm pilot=M. Collins
-   year=1969
-   capcom=C. M. Duke
+    program.name=Apollo
+    sequence=11
+    commander=N. A. Armstrong
+    lm pilot=E. E. Aldrin
+    cm pilot=M. Collins
+    year=1969
+    capcom=C. M. Duke
 
 API
 ===
