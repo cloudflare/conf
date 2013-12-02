@@ -62,6 +62,16 @@ func TestSimpleConfig(t *testing.T) {
 	assert(t, c.GetString("bam", "") == "")
 	assert(t, c.GetUint("bam", 0) == 0)
 
+	// Check handling of equals sign in values
+
+	f = makeFile("foo==FOO\nbar=BAR=\nbaz=Baz=Baz")
+	c, err = ReadConfigFile(f)
+	assert(t, c != nil)
+	assert(t, err == nil)
+	assert(t, c.GetString("foo", "") == "=FOO")
+	assert(t, c.GetString("bar", "") == "BAR=")
+	assert(t, c.GetString("baz", "") == "Baz=Baz")
+
 	// Check handling of empty value
 
 	f = makeFile("foo=1\nbar=")
