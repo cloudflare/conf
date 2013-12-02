@@ -35,6 +35,7 @@ func TestEmptyConfig(t *testing.T) {
 	assert(t, c != nil)
 	assert(t, err == nil)
 	assert(t, c.CheckUnread() == "")
+	os.Remove(f)
 }
 
 func TestSimpleConfig(t *testing.T) {
@@ -61,6 +62,18 @@ func TestSimpleConfig(t *testing.T) {
 	assert(t, c.GetUint("baz", 3) == 3)
 	assert(t, c.GetString("bam", "") == "")
 	assert(t, c.GetUint("bam", 0) == 0)
+	os.Remove(f)
+
+	// Check handling of equals sign in values
+
+	f = makeFile("foo==FOO\nbar=BAR=\nbaz=Baz=Baz")
+	c, err = ReadConfigFile(f)
+	assert(t, c != nil)
+	assert(t, err == nil)
+	assert(t, c.GetString("foo", "") == "=FOO")
+	assert(t, c.GetString("bar", "") == "BAR=")
+	assert(t, c.GetString("baz", "") == "Baz=Baz")
+	os.Remove(f)
 
 	// Check handling of empty value
 
@@ -72,6 +85,7 @@ func TestSimpleConfig(t *testing.T) {
 	assert(t, c.GetUint("foo", 2) == 1)
 	assert(t, c.GetString("bar", "BAR") == "")
 	assert(t, c.GetUint("bar", 2) == 2)
+	os.Remove(f)
 }
 
 func TestCheckUnread(t *testing.T) {
@@ -88,18 +102,22 @@ func TestCheckUnread(t *testing.T) {
 	assert(t, c.GetString("foo", "FOO") == "1")
 	assert(t, !strings.Contains(c.CheckUnread(), "foo (1)"))
 	assert(t, !strings.Contains(c.CheckUnread(), "bar (2)"))
+	os.Remove(f)
 }
 
 func TestCheckErrors(t *testing.T) {
 	f := makeFile("foo=1\nbaz")
 	_, err := ReadConfigFile(f)
 	assert(t, err != nil)
+	os.Remove(f)
 
 	f = makeFile("foo=1\n=baz")
 	_, err = ReadConfigFile(f)
 	assert(t, err != nil)
+	os.Remove(f)
 
 	f = makeFile("foo=1\nfoo=2")
 	_, err = ReadConfigFile(f)
 	assert(t, err != nil)
+	os.Remove(f)
 }

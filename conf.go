@@ -50,7 +50,7 @@ func ReadConfigFile(file string) (c *Config, err error) {
 			l += 1
 
 			if len(line) > 0 && line[0] != '#' {
-				parts := strings.Split(line, "=")
+				parts := strings.SplitN(line, "=", 2)
 
 				if len(parts) != 2 {
 					err = fmt.Errorf("Config line %d invalid: %s (missing =)", l,
