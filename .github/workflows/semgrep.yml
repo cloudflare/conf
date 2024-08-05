@@ -6,6 +6,8 @@
       branches:
         - main
         - master
+	schedule:
+		- cron: '44 8 * * *'
   name: Semgrep config
   jobs:
     semgrep:
